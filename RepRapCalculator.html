@@ -13,7 +13,8 @@
 		Useful set of calculators for RepRap users. Remember, newest version is on <a href="https://github.com/prusajr/RepRapCalculator">GitHub</a>.
 	</p>
 	<p>
-		By Josef Prusa <a href="http://josefprusa.cz">http://josefprusa.cz</a>
+		By Josef Prusa <a href="http://josefprusa.cz">http://josefprusa.cz</a> <a href="http://flattr.com/thing/126870/RepRapCalculator" target="_blank">
+<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a>
 	</p>
 <ul>
 <li>
@@ -111,7 +112,7 @@ The result is theoreticaly right, but you might still need to calibrate your mac
 	<input type="text" name="StepPerMMBeltToothCount" id="StepPerMMBeltToothCount" value="8" />
 	</p>
 	<p>
-	<b>Steps per mm = ((360/Motor step size) * (1/Driver microstepping))/Leadcrew pitch</b>
+	<b>Steps per mm = ((360/Motor step size) * (1/Driver microstepping))/(Belt pitch * Tooth count)</b>
 	</p>
 	
 <button class="smallButton" id="StepPerMMBeltCalculate" onclick="return false">Calculate</button>
