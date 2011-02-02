@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<!-- The following are automatically inserted by servee -->
+	<script type='text/javascript' src='http://code.jquery.com/jquery-1.4.2.min.js' ></script>
+	<title>RepRapCalculator</title>
+	<meta charset="utf-8" />
+	
+</head>
+<body>
+<h1>RepRap Calculator</h1>
+	<p>
+		Useful set of calculators for RepRap users. Remember, newest version is on <a href="https://github.com/prusajr/RepRapCalculator">GitHub</a>.
+	</p>
+	<p>
+		By Josef Prusa <a href="http://josefprusa.cz">http://josefprusa.cz</a>
+	</p>
+<ul>
+<li>
+	<a href="#MotorStuff">Motor stuff</a>
+	<ul>
+	<li><a href="#MotorStuffSPML">Steps per mm - leadscrew</a></li>
+	<li><a href="#MotorStuffSPMB">Steps per mm - belt</a></li>
+	</ul>
+</li>
+</ul>
+<a name="MotorStuff" />
+<h2>Motors stuff</h2> 
+<a name="MotorStuffSPML" />
+<h3>Steps per mm - leadscrew</h3>
+The result is theoreticaly right, but you might still need to calibrate your machine to get finest detail. This is good start tho.
+<form > 
+	<p>
+	Motor step size 
+	<select name="StepPerMMLeadscrewStepSize" id="StepPerMMLeadscrewStepSize">
+		<option value="1.8">1.8°</option>
+		<option value="0.9">0.9°</option>
+		<option value="7.5">7.5°</option>
+	</select>
+	</p>
+	<p>
+	Driver microstepping
+	<select name="StepPerMMLeadscrewMicroStepping" id="StepPerMMLeadscrewMicroStepping">
+		<option value="1">1 - full step</option>
+		<option value="2">1/2 - half step</option>
+		<option value="4">1/4 - quater step</option>
+		<option value="8">1/8 - uStep (mostly Gen6)</option>
+		<option value="16" selected>1/16 - uStep (mostly Pololu)</option>
+	</select>
+	</p>
+	<p>
+	Leadcrew pitch
+	<select name="StepPerMMLeadscrewType" id="StepPerMMLeadscrewType">
+		<option value="1.25">M8 - metric (1.25mm per rotation)</option>
+		<option value="7.02056">5/16 - imperial (7.02056mm per rotation)</option>
+	</select>
+	</p>
+	<p>
+	<b>Steps per mm = ((360/Motor step size) * (1/Driver microstepping))/Leadcrew pitch</b>
+	</p>
+	
+<button class="smallButton" id="StepPerMMLeadscrewCalculate" onclick="return false">Calculate</button>
+  <input type="text" name="StepPerMMLeadscrewAnswer" id="StepPerMMLeadscrewAnswer" />
+</form> 
+
+<script type="text/javascript"> 
+$("#StepPerMMLeadscrewCalculate").click(function(){ 
+var StepSize, Microstepping, LeadscrewPitch;
+StepSize = parseFloat($("#StepPerMMLeadscrewStepSize").val());
+Microstepping = parseInt($("#StepPerMMLeadscrewMicroStepping").val());
+LeadscrewPitch = parseFloat($("#StepPerMMLeadscrewType").val());
+
+var StepsPerMM;
+StepsPerMM = ((360/StepSize)*Microstepping)/LeadscrewPitch;
+$("#StepPerMMLeadscrewAnswer").val(StepsPerMM); 
+
+return false; 
+}); 
+</script>
+<a name="MotorStuffSPMB" />
+<h3>Steps per mm - belt</h3> 
+The result is theoreticaly right, but you might still need to calibrate your machine to get finest detail. This is good start tho.
+<form > 
+	<p>
+	Motor step size 
+	<select name="StepPerMMBeltStepSize" id="StepPerMMBeltStepSize">
+		<option value="1.8">1.8°</option>
+		<option value="0.9">0.9°</option>
+		<option value="7.5">7.5°</option>
+	</select>
+	</p>
+	<p>
+	Driver microstepping
+	<select name="StepPerMMBeltMicroStepping" id="StepPerMMBeltMicroStepping">
+		<option value="1">1 - full step</option>
+		<option value="2">1/2 - half step</option>
+		<option value="4">1/4 - quater step</option>
+		<option value="8">1/8 - uStep (mostly Gen6)</option>
+		<option value="16" selected>1/16 - uStep (mostly Pololu)</option>
+	</select>
+	</p>
+	<p>
+	Belt pitch
+	<select name="StepPerMMBeltPitch" id="StepPerMMBeltPitch">
+		<option value="5">T5 (5mm)</option>
+		<option value="2.5">T2.5 (2.5mm)</option>
+	</select>
+	</p>
+	<p>
+	Tooth count
+	<input type="text" name="StepPerMMBeltToothCount" id="StepPerMMBeltToothCount" value="8" />
+	</p>
+	<p>
+	<b>Steps per mm = ((360/Motor step size) * (1/Driver microstepping))/Leadcrew pitch</b>
+	</p>
+	
+<button class="smallButton" id="StepPerMMBeltCalculate" onclick="return false">Calculate</button>
+  <input type="text" name="StepPerMMBeltAnswer" id="StepPerMMBeltAnswer" />
+</form> 
+
+<script type="text/javascript"> 
+$("#StepPerMMBeltCalculate").click(function(){ 
+var StepSize, Microstepping, BeltPitch, ToothCount;
+StepSize = parseFloat($("#StepPerMMBeltStepSize").val());
+Microstepping = parseInt($("#StepPerMMBeltMicroStepping").val());
+BeltPitch = parseFloat($("#StepPerMMBeltPitch").val());
+ToothCount = parseInt($("#StepPerMMBeltToothCount").val());
+
+var StepsPerMM;
+StepsPerMM = ((360/StepSize)*Microstepping)/(BeltPitch*ToothCount);
+$("#StepPerMMBeltAnswer").val(StepsPerMM); 
+
+return false; 
+}); 
+</script>
+
+
+
+<p>
+Using jQuery
+</p>
+</body>
+</html>
