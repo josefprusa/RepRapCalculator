@@ -24,6 +24,13 @@
 	<li><a href="#MotorStuffSPMB">Steps per mm - belt</a></li>
 	</ul>
 </li>
+<li>
+	<a href="#Convertors">Convertors</a>
+	<ul>
+	<li><a href="#ConvertorsMMToF">mm/s to feedrate</a></li>
+	<li><a href="#ConvertorsFToMM">Feedrate to mm/6</a></li>
+	</ul>
+</li>
 </ul>
 <a name="MotorStuff" />
 <h2>Motors stuff</h2> 
@@ -131,6 +138,66 @@ ToothCount = parseInt($("#StepPerMMBeltToothCount").val());
 var StepsPerMM;
 StepsPerMM = ((360/StepSize)*Microstepping)/(BeltPitch*ToothCount);
 $("#StepPerMMBeltAnswer").val(StepsPerMM); 
+
+return false; 
+}); 
+</script>
+
+<a name="Convertors" />
+<h2>Convertors</h2> 
+<a name="ConvertorsMMToF" />
+<h3>mm/s to feedrate</h3>
+Converting mm/s speed to feedrate used in gcode
+<form > 
+	<p>
+	mm/s
+	<input type="text" name="ConvertorsMMToFmms" id="ConvertorsMMToFmms" value="50" />
+	</p>
+	<p>
+	<b>Feedrate = (mm/s)*60</b>
+	</p>
+	
+<button class="smallButton" id="ConvertorsMMToFCalculate" onclick="return false">Calculate</button>
+  <input type="text" name="ConvertorsMMToFAnswer" id="ConvertorsMMToFAnswer" />
+</form> 
+
+<script type="text/javascript"> 
+$("#ConvertorsMMToFCalculate").click(function(){ 
+var mms;
+mms = parseFloat($("#ConvertorsMMToFmms").val());
+
+var Feedrate;
+Feedrate = mms*60;
+$("#ConvertorsMMToFAnswer").val(Feedrate); 
+
+return false; 
+}); 
+</script>
+
+<a name="ConvertorsFToMM" />
+<h3>Feedrate to mm/s</h3>
+Converting feedrate from gcode to mm/s
+<form > 
+	<p>
+	Feedrate
+	<input type="text" name="ConvertorsFToMMFeedrate" id="ConvertorsFToMMFeedrate" value="3000" />
+	</p>
+	<p>
+	<b>mm/s = Feedrate/60</b>
+	</p>
+	
+<button class="smallButton" id="ConvertorsFToMMCalculate" onclick="return false">Calculate</button>
+  <input type="text" name="ConvertorsFToMMAnswer" id="ConvertorsFToMMAnswer" />
+</form> 
+
+<script type="text/javascript"> 
+$("#ConvertorsFToMMCalculate").click(function(){ 
+var Feedrate;
+Feedrate = parseFloat($("#ConvertorsFToMMFeedrate").val());
+
+var mms;
+mms = Feedrate/60;
+$("#ConvertorsFToMMAnswer").val(mms); 
 
 return false; 
 }); 
