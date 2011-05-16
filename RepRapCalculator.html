@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<!-- The following are automatically inserted by servee -->
-	<script type='text/javascript' src='http://code.jquery.com/jquery-1.4.2.min.js' ></script>
+	<script type='text/javascript' src='jquery-1.5.min.js' ></script>
 	<title>RepRapCalculator</title>
 	<meta charset="utf-8" />
 	<style>
@@ -45,8 +45,8 @@
 <li>
 	<a href="#Convertors">Convertors</a>
 	<ul>
-	<li><a href="#ConvertorsMMToF">mm/s to feedrate</a></li>
-	<li><a href="#ConvertorsFToMM">Feedrate to mm/6</a></li>
+	<li><a href="#ConvertorsMMToF">mm/s to gcode feedrate</a></li>
+	<li><a href="#ConvertorsFToMM">gcode feedrate to mm/s</a></li>
 	</ul>
 </li>
 <li>
@@ -63,14 +63,14 @@
 <a name="MotorStuffPrecise" />
 <h3>Precise calibration</h3>
 <div class="calculation">
-If you move axis in sw for 10mm (demanded lenght) and actual machine moves for only 8mm, you need to do this calibration. This will calculate new steps per mm value for the axis we calibrate.
+If you move axis in sw for 10mm (demanded length) and actual machine moves for only 8mm, you need to do this calibration. This will calculate new steps per mm value for the axis we calibrate.
 <form > 
 	<p>
-	Demanded move lenght in mm
+	Demanded move length in mm
 	<input type="text" name="MotorStuffPreciseD" id="MotorStuffPreciseD" value="100" />
 	</p>
 	<p>
-	Actual move lenght in mm
+	Actual move length in mm
 	<input type="text" name="MotorStuffPreciseA" id="MotorStuffPreciseA" value="95" />
 	</p>
 	<p>
@@ -78,7 +78,7 @@ If you move axis in sw for 10mm (demanded lenght) and actual machine moves for o
 	<input type="text" name="MotorStuffPreciseSteps" id="MotorStuffPreciseSteps" value="20" />
 	</p>
 	<p>
-	<b>New steps per mm = (Demanded move lenght in mm / Actual move lenght in mm) * Actual steps per mm</b>
+	<b>New steps per mm = (Demanded move length in mm / Actual move length in mm) * Actual steps per mm</b>
 	</p>
 	
 <button class="smallButton" id="MotorStuffPreciseCalculate" onclick="return false">Calculate</button>
@@ -107,7 +107,7 @@ return false;
 The result is theoreticaly right, but you might still need to calibrate your machine to get finest detail. This is good start tho.
 <form > 
 	<p>
-	Motor step size 
+	Motor step angle 
 	<select name="StepPerMMLeadscrewStepSize" id="StepPerMMLeadscrewStepSize">
 		<option value="1.8">1.8°</option>
 		<option value="0.9">0.9°</option>
@@ -125,11 +125,11 @@ The result is theoreticaly right, but you might still need to calibrate your mac
 	</select>
 	</p>
 	<p>
-	Leadcrew pitch
+	Leadscrew pitch
 	<select name="StepPerMMLeadscrewType" id="StepPerMMLeadscrewType">
 		<option value="1.25">M8 - metric (1.25mm per rotation)</option>
 		<option value="1">M6 - metric (1mm per rotation)</option>
-		<option value="7.02056">5/16 - imperial (7.02056mm per rotation)</option>
+		<option value="1.41111">5/16"-18 imperial coarse (1.41111mm per rotation)</option>
 	</select>
 	</p>
 	<p>
@@ -139,7 +139,7 @@ The result is theoreticaly right, but you might still need to calibrate your mac
 	(1:1 for direct drive - Prusa)
 	</p>
 	<p>
-	<b>Steps per mm = (((360/Motor step size) * (1/Driver microstepping))/Leadcrew pitch)*(Leadscrew pulley teeth count / Motor pulley teeth count)</b>
+	<b>Steps per mm = (((360/Motor step angle) * (1/Driver microstepping))/Leadscrew pitch)*(Leadscrew pulley teeth count / Motor pulley teeth count)</b>
 	</p>
 	
 <button class="smallButton" id="StepPerMMLeadscrewCalculate" onclick="return false">Calculate</button>
@@ -169,7 +169,7 @@ return false;
 The result is theoreticaly right, but you might still need to calibrate your machine to get finest detail. This is good start tho.
 <form > 
 	<p>
-	Motor step size 
+	Motor step angle 
 	<select name="StepPerMMBeltStepSize" id="StepPerMMBeltStepSize">
 		<option value="1.8">1.8°</option>
 		<option value="0.9">0.9°</option>
@@ -191,7 +191,7 @@ The result is theoreticaly right, but you might still need to calibrate your mac
 	<select name="StepPerMMBeltPitch" id="StepPerMMBeltPitch">
 		<option value="5">T5 (5mm)</option>
 		<option value="2.5">T2.5 (2.5mm)</option>
-		<option value="5.08">0.2inch belt (5.08mm)</option>
+		<option value="5.08">0.2" XL belt (5.08mm)</option>
 	</select>
 	</p>
 	<p>
@@ -225,9 +225,14 @@ return false;
 <a name="Convertors" />
 <h2>Convertors</h2> 
 <a name="ConvertorsMMToF" />
-<h3>mm/s to feedrate</h3>
+<h3>mm/s to gcode feedrate</h3>
 <div class="calculation">
-Converting mm/s speed to feedrate used in gcode
+	The standard feedrate as used within gcode is in millimeters per minute. For example:<br />
+	<br />
+	<code>G1 X90.6 Y13.8 E22.4 <b>F3000</b></code><br />
+	<br />
+	gives a feedrate of 3000 millimeters per minute.
+	The calculator below will convert the millimeters per second speed used in Skeinforge to the feedrate used in gcode.
 <form > 
 	<p>
 	mm/s
@@ -255,9 +260,14 @@ return false;
 </script>
 </div>
 <a name="ConvertorsFToMM" />
-<h3>Feedrate to mm/s</h3>
+<h3>gcode feedrate to mm/s</h3>
 <div class="calculation">
-Converting feedrate from gcode to mm/s
+	The standard feedrate as used within gcode is in millimeters per minute. For example:<br />
+	<br />
+	<code>G1 X90.6 Y13.8 E22.4 <b>F3000</b></code><br />
+	<br />
+	gives a feedrate of 3000 millimeters per minute.
+	The calculator below will convert the feedrate used in gcode to the millimeters per second speed used in Skeinforge.
 <form > 
 	<p>
 	Feedrate
@@ -327,10 +337,8 @@ return false;
 </script>
 </div>
 
-
-<p>
-Using jQuery
-</p>
+<br/>
+Using <a href="http://jquery.com/">jQuery</a>
 </div>
 </body>
 </html>
