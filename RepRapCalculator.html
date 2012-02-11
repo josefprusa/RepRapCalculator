@@ -140,7 +140,8 @@ The result is theoreticaly right, but you might still need to calibrate your mac
 	(1:1 for direct drive - Prusa)
 	</p>
 	<p>
-	<b>Steps per mm = (((360/Motor step angle) * (1/Driver microstepping))/Leadscrew pitch)*(Leadscrew pulley teeth count / Motor pulley teeth count)</b>
+	For example:
+	<b>2560 = (((360/1.8) * (1/(1/16)))/1.25h)*(1 / 1)</b>
 	</p>
 	
 <button class="smallButton" id="StepPerMMLeadscrewCalculate" onclick="return false">Calculate</button>
@@ -203,7 +204,9 @@ The result is theoreticaly right, but you might still need to calibrate your mac
 	<input type="text" name="StepPerMMBeltToothCount" id="StepPerMMBeltToothCount" value="8" />
 	</p>
 	<p>
-	<b>Steps per mm = ((360/Motor step size) * (1/Driver microstepping))/(Belt pitch * Tooth count)</b>
+	<b>Steps per mm = ((360/Motor step size) * (1/Driver microstepping))/(Belt pitch * Tooth count)</b><br />
+	For example:<br />
+	<b>80 = ((360/1.8) * (1/(1/16)))/(5 * 8)</b>
 	</p>
 	
 <button class="smallButton" id="StepPerMMBeltCalculate" onclick="return false">Calculate</button>
