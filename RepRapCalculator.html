@@ -3,112 +3,378 @@
 <head>
 	<!-- The following are automatically inserted by servee -->
 	<script type='text/javascript' src='jquery-1.5.min.js' ></script>
+	<script src="thermistor.js"></script>
+	<script src="temptable.js"></script>
 	<title>RepRapCalculator</title>
 	<meta charset="utf-8" />
 	<style>
+	body{
+		background-color:#FFFFFF;
+		background: -moz-linear-gradient(top, #DBDBDB, #FFFFFF);
+		background: -webkit-gradient(linear, left top, left bottom, from(#DBDBDB), to(#FFFFFF));
+		font-family: Arial, Helvetica, sans-serif;
+		color:#344753;
+	}
+	a,a:hover,a:visited{
+		color:#344753;
+	}
+	a:hover{
+		text-decoration: none;
+	}
 	#content {
   		width: 600px ;
   		margin-left: auto ;
   		margin-right: auto ;
   		padding: 10px;
   		padding-top: 1px;
-  		background-color: #EEEEEE;
 	}
 	.calculation{
-		padding: 10px;
-		background-color: #CCCCCC;
+		padding: 18px;
+		background-color:#E0E478;
+		background: -moz-linear-gradient(top, #E0E478, #C6D646);
+		background: -webkit-gradient(linear, left top, left bottom, from(#E0E478), to(#C6D646));
+	}
+	
+	#mainCalculation{
+		border-bottom-right-radius: 8px;
+		border-bottom-left-radius: 8px;
+		-moz-border-bottom-right-radius: 8px;
+		-moz-border-bottom-left-radius: 8px;
+		margin-bottom:25px;
+	}
+	.calculationHeader{
+		padding: 18px;
+		padding-bottom: 12px;
+		padding-top: 12px;
+		background-color:#394D54;
+		background: -moz-linear-gradient(top, #394D54, #19272D);
+		background: -webkit-gradient(linear, left top, left bottom, from(#394D54), to(#19272D));
+		border-top-right-radius: 8px;
+		border-top-left-radius: 8px;
+		-moz-border-top-right-radius: 8px;
+		-moz-border-top-left-radius: 8px;
+		color:#DAE36C;
+	}
+	
+	.calculationAnswer{
+		padding: 18px;
+		padding-bottom: 12px;
+		padding-top: 12px;
+		background-color:#394D54;
+		background: -moz-linear-gradient(top, #394D54, #19272D);
+		background: -webkit-gradient(linear, left top, left bottom, from(#394D54), to(#19272D));
+		border-bottom-right-radius: 8px;
+		border-bottom-left-radius: 8px;
+		-moz-border-bottom-right-radius: 8px;
+		-moz-border-bottom-left-radius: 8px;
+		color:#DAE36C;
+		margin-bottom:18px;
+	}
+	
+	.notification{
+		background-color:#A13F29;
+		background: -moz-linear-gradient(top, #B8472C, #A13F29);
+		background: -webkit-gradient(linear, left top, left bottom, from(#B8472C), to(#A13F29));
+		color:#F3E4C0;
+		padding:18px;
+		
+		padding-top:11px;
+		padding-bottom:11px;
+	}
+	.notification p{
+		margin:0px;
+	}
+	.notification a,.notification a:hover,.notification a:visited{
+		color:#F3E4C0;
+	}
+	
+	.rounded{
+		border-radius: 8px;
+		-moz-border-radius: 8px;
+		margin-bottom: 18px;
+	}
+	
+	.noround{
+		border-radius: 0px;
+		-moz-border-radius: 0px;
+		margin-bottom: 0px;
+	}
+	
+	hr {
+	  border-color: #394D54;
+	  border-style: solid;
+	  border-width: 1px 0 0;
+	  clear: both;
+	  margin-bottom:18px;
+	}
+	
+	h1{
+		font-size: 3em;
+		display: block;
+		text-align:center;
 	}
 	h2{
+		display:none;
 		border-bottom: 2px solid black;
+	}
+	h3{
+		margin:0px;
+		padding:0px;
+		font-size: 1.5em;
+	}
+	ul{
+		padding-left: 25px;
+	}
+	li ul{
+		margin-bottom: 8px;
+	}
+	.smallInput{
+		width: 30px;
+	}
+	#footer{
+		text-align:center;
+		font-size:0.7em;
 	}
 	</style>
 </head>
 <body>
 <div id="content">
-<h1>RepRap Calculator</h1>
-	<p>
-		Useful set of calculators for RepRap users. Remember, newest version is on <a href="https://github.com/prusajr/RepRapCalculator">GitHub</a>.
-	</p>
-	<p>
-		By Josef Prusa <a href="http://josefprusa.cz">http://josefprusa.cz</a> <a href="http://flattr.com/thing/126870/RepRapCalculator" target="_blank">
-<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a>
-	</p>
-<ul>
-<li>
-	<a href="#MotorStuff">Motor stuff</a>
-	<ul>
-	<li><a href="#MotorStuffPrecise">Precise calibration</a></li>
-	<li><a href="#MotorStuffSPML">Steps per mm - leadscrew</a></li>
-	<li><a href="#MotorStuffSPMB">Steps per mm - belt</a></li>
-	</ul>
-</li>
-<li>
-	<a href="#Convertors">Convertors</a>
-	<ul>
-	<li><a href="#ConvertorsMMToF">mm/s to gcode feedrate</a></li>
-	<li><a href="#ConvertorsFToMM">gcode feedrate to mm/s</a></li>
-	</ul>
-</li>
-<li>
-	<a href="#Extrusion">Extrusion</a>
-	<ul>
-	<li><a href="#ExtrusionLC">Flow rate multiplier for layer height change </a></li>
-	</ul>
-</li>
-</ul>
-<a name="MotorStuff" />
-
-
-<h2>Motors stuff</h2> 
-<a name="MotorStuffPrecise" />
-<h3>Precise calibration</h3>
-<div class="calculation">
-If you move axis in sw for 10mm (demanded length) and actual machine moves for only 8mm, you need to do this calibration. This will calculate new steps per mm value for the axis we calibrate.
-<form > 
-	<p>
-	Demanded move length in mm
-	<input type="text" name="MotorStuffPreciseD" id="MotorStuffPreciseD" value="100" />
-	</p>
-	<p>
-	Actual move length in mm
-	<input type="text" name="MotorStuffPreciseA" id="MotorStuffPreciseA" value="95" />
-	</p>
-	<p>
-	Actual steps per mm
-	<input type="text" name="MotorStuffPreciseSteps" id="MotorStuffPreciseSteps" value="20" />
-	</p>
-	<p>
-	<b>New steps per mm = (Demanded move length in mm / Actual move length in mm) * Actual steps per mm</b>
-	</p>
 	
-<button class="smallButton" id="MotorStuffPreciseCalculate" onclick="return false">Calculate</button>
-  <input type="text" name="MotorStuffPreciseAnswer" id="MotorStuffPreciseAnswer" />
-</form> 
+<div class="calculationHeader">
+	<h1>RepRap Calculator v2</h1>
+</div>
+<div class="notification">
+	<p>
+		Proudly brought to you by <a href="http://josefprusa.cz">Josef Prusa</a>. It took some time though, please consider donation.</p><center><form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+		<input type="hidden" name="cmd" value="_s-xclick">
+		<input type="hidden" name="hosted_button_id" value="X7JHHWXV86QWJ">
+		<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+		<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+		</form></center>
 
-<script type="text/javascript"> 
-$("#MotorStuffPreciseCalculate").click(function(){ 
-var MotorStuffPreciseD, MotorStuffPreciseA, MotorStuffPreciseSteps;
-MotorStuffPreciseD = parseFloat($("#MotorStuffPreciseD").val());
-MotorStuffPreciseA = parseFloat($("#MotorStuffPreciseA").val());
-MotorStuffPreciseSteps = parseFloat($("#MotorStuffPreciseSteps").val());
+	
+	
+</div>
+	<div class="calculation" id="mainCalculation">
+		<p>
+			Useful set of calculators for RepRap users.
+		</p>
+		
+		
+		<ul>
+			<li>
+				<a href="#Printing">Printing</a>
+				<ul>
+				<li><a href="#PrintSetup">Optimal print settings</a></li>
+				</ul>
+			</li>
+		<li>
+			<a href="#MotorStuff">Firmware settings</a>
+			<ul>
+			<li><a href="#MotorStuffSPML">Steps per mm - leadscrew</a></li>
+			<li><a href="#MotorStuffSPMB">Steps per mm - belt</a></li>
+			<li><a href="#ExtrusionSF40">Slic3r,SFACT, SF40+ volumetric calibration</a></li>
+			<li><a href="#TempLookup">Thermistor lookup table generator</a></li>
+			<li><a href="#MotorStuffPrecise">Tweaking calibration</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#Convertors">Handy utilities</a>
+			<ul>
+			<li><a href="#ConvertorsMMToF">mm/s to gcode feedrate</a></li>
+			<li><a href="#ConvertorsFToMM">gcode feedrate to mm/s</a></li>
+			<li><a href="#ExtrusionLC">Flow rate multiplier for layer height change</a></li>
+			</ul>
+		</li>
+		</ul>
+	</div>
 
-var NewSteps;
-NewSteps = (MotorStuffPreciseD/MotorStuffPreciseA)*MotorStuffPreciseSteps;
-$("#MotorStuffPreciseAnswer").val(NewSteps); 
-
-return false; 
-}); 
-</script>
+<div class="notification rounded">
+<p>Change the values and answer appears instantly. Please <strong>hit Enter</strong> when modifying text fields to submit your value.
+</p>	
 </div>
 
+<a name="Printing" />
+
+<h2>Printing</h2>
+<a name="PrintSetup" />
+
+	<div class="calculationHeader">
+		<h3>Optimal print settings</h3>
+	</div>
+
+	<div class="calculation">
+
+		This should provide you some solid starting settings. It basically uses all rules I use for my prints. As bonus it shows you some estimates what to expect (maximum overhang angle, ...). For starters just choose your nozzle diameter. In second stage you can tweak the predicted settings. When some of them are not usable, warning will pop up.
+
+		<p>
+		Nozzle diameter
+		<select id="PrintSetupNozzle" class="PrintSetup1">
+			<option value="0.5">0.5mm</option>
+			<option value="0.35">0.35mm</option>
+			<option value="0.4">0.4mm</option>
+			<option value="0.25">0.25mm</option>
+			<option value="0.75">0.75mm</option>
+			<option value="0.150">0.15mm</option>
+			<option value="1.0">1.00mm</option>
+		</select>
+		</p>
+		</div>
+		<div class="calculationAnswer noround">
+			Predicted free extrusion diameter = <input type="text" id="PrintSetupPredDiaAnswer" class="smallInput" /> mm<br />
+			Suggested layer height = <input type="text" id="PrintSetupSugLHDAnswer" class="smallInput" /> mm<br />
+		</div>
+		<div class="calculation">
+		
+		<p>
+		Free extrusion diameter
+		<input type="text" id="PrintSetupDia" class="PrintSetup2 smallInput" value="0.58" /> mm
+		</p>
+		<p>
+		Layer height
+		<input type="text" id="PrintSetupLH" class="PrintSetup2 smallInput"  value="0.3" /> mm
+		</p>
+		<p>
+		<strong>W</strong>idth <strong>O</strong>ver <strong>H</strong>eight
+		<input type="text" id="PrintSetupWOH" class="PrintSetup2 smallInput" value="2.2" />
+		</p>
+		<ul>
+		<li>Multiplier, gives you line width after multiplying layer height.
+		<li>Affects print detail.
+		<li>Affects maximal overhang angle possible.
+		<li>WOH smaller than 2.0 produces weak parts.
+		<li>WOH bigger than 3 decreases the detail of printed part, because of thick line.
+		</ul>
+	</div>
+	<div class="notification" id="smallWOH"><p><strong>Warning!</strong> WOH is under 2.0, that will cause your parts to be weak and easy to break.</p></div>
+	<div class="notification" id="tooLittle"><p><strong>Warning!</strong> You'll have troubles printing infill because your extruded line cross section area is smaller than minimal extrusion cross section area for stable extrusion. Try bigger layer height or bigger WOH. If you need to use this, set up 100% infill. Ideally get a smaller nozzle for this job ;-)</p></div>
+	<div class="notification" id="tooMuch"><p><strong>Warning!</strong> You will be extruding too much from your nozzle. It will make the unsupported line (infill) soggy and cause many other problems. Try smaller layer height or smaller WOH.</p></div>
+	<div class="calculationAnswer">
+		Free extrusion cross section area = <input type="text" id="PrintSetupFreeExt" class="smallInput"/> mm^2<br/>
+		Minimal extrusion cross section area for stable extrusion = <input type="text" id="PrintSetupMinExt" class="smallInput"/> mm^2<br/>
+		Line width = <input type="text" id="PrintSetupLW"class="smallInput" /> mm<br/>
+		Extruded line cross section area = <input type="text" id="PrintSetupExtLine" class="smallInput" /> mm^2<br/>
+		
+		Suggested bridge flow-rate multiplier = <input type="text" id="PrintSetupBridge" class="smallInput"/><br/>
+		Predicted smallest feature printable in XY = <input type="text" id="PrintSetupSmallest" class="smallInput" /> mm<br/>
+		Predicted maximim overhang angle = <input type="text" id="PrintSetupAngle" class="smallInput" /> °<br/>
+	</div>
+
+		<script type="text/javascript"> 
+		function roundNumber(num, dec) {
+			var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
+			return result;
+		}
+		
+		function PrintSetup1(){ 
+		suggest = new Array(0,1,2);
+			suggest[50] = 0.3;
+			suggest[25] = 0.15;
+			suggest[35] = 0.2;
+			suggest[75] = 0.4;
+			suggest[40] = 0.25;
+			suggest[100] = 0.5;
+			suggest[15] = 0.1;
+		
+		var predictedFreeExt, suggestedLH;
+		predictedFreeExt = parseFloat($("#PrintSetupNozzle").val())+0.08;
+		suggestedLH = suggest[parseInt(  parseFloat(   $("#PrintSetupNozzle").val()  )   *100)];
+
+		$("#PrintSetupPredDiaAnswer").val(predictedFreeExt);
+		$("#PrintSetupSugLHDAnswer").val(suggestedLH);
+		$("#PrintSetupDia").val(predictedFreeExt);
+		$("#PrintSetupLH").val(suggestedLH);
+		PrintSetup2();
+		}
+
+		$(".PrintSetup1").change(function () {
+			PrintSetup1();
+		});
+		PrintSetup1();
+		
+		function PrintSetup2(){
+			var extDia, LH, WOH;
+			extDia = parseFloat($("#PrintSetupDia").val());
+			LH = parseFloat($("#PrintSetupLH").val());
+			WOH = parseFloat($("#PrintSetupWOH").val());
+			
+			var freeExt;
+			freeExt = (extDia/2)*(extDia/2)*Math.PI;
+			$("#PrintSetupFreeExt").val(roundNumber(freeExt,2));
+			
+			var minExt;
+			minExt = freeExt*0.5;	
+			$("#PrintSetupMinExt").val(roundNumber(minExt,2));
+			
+			var lineWidth;
+			lineWidth = LH*WOH;
+			$("#PrintSetupLW").val(lineWidth);
+			
+			var extLine;
+			extLine = lineWidth * LH;
+			$("#PrintSetupExtLine").val(extLine);
+			
+			if(extLine>=freeExt){
+				$("#tooMuch").show();
+			}else{
+				$("#tooMuch").hide();
+			}
+			
+			if(minExt>=extLine){
+				$("#tooLittle").show();
+			}else{
+				$("#tooLittle").hide();
+			}
+			
+			if(2.0>WOH){
+				$("#smallWOH").show();
+			}else{
+				$("#smallWOH").hide();
+			}
+			
+			
+			var bridgeMult;
+			bridgeMult = (freeExt*0.7)/extLine;
+			$("#PrintSetupBridge").val(roundNumber(bridgeMult,2));
+				
+			var smallest;
+			smallest = lineWidth/2;
+			$("#PrintSetupSmallest").val(roundNumber(smallest,1));
+			
+			var angle,angleHelp;
+			angleHelp = Math.sqrt((lineWidth/2)*(lineWidth/2)+LH*LH);
+			angleHelp = Math.asin((lineWidth/2)/angleHelp);
+			angle = angleHelp * (180/Math.PI);
+			$("#PrintSetupAngle").val(roundNumber(angle,1));
+			
+		}
+		$(".PrintSetup2").change(function () {
+			PrintSetup2();
+		});
+		PrintSetup2();
+		
+
+		</script>
+
+	<hr width="30%" />
+
+
+
+<a name="MotorStuff" />
+
+<h2>Firmware settings</h2> 
+
+
+
+
 <a name="MotorStuffSPML" />
-<h3>Steps per mm - leadscrew</h3>
+<div class="calculationHeader">
+<h3>Steps per mm - leadscrew</h3></div>
 <div class="calculation">
 The result is theoreticaly right, but you might still need to calibrate your machine to get finest detail. This is good start tho.
-<form > 
 	<p>
 	Motor step angle 
-	<select name="StepPerMMLeadscrewStepSize" id="StepPerMMLeadscrewStepSize">
+	<select id="StepPerMMLeadscrewStepSize" class="MotorStuffSPML">
 		<option value="1.8">1.8°</option>
 		<option value="0.9">0.9°</option>
 		<option value="7.5">7.5°</option>
@@ -116,7 +382,7 @@ The result is theoreticaly right, but you might still need to calibrate your mac
 	</p>
 	<p>
 	Driver microstepping
-	<select name="StepPerMMLeadscrewMicroStepping" id="StepPerMMLeadscrewMicroStepping">
+	<select id="StepPerMMLeadscrewMicroStepping" class="MotorStuffSPML">
 		<option value="1">1 - full step</option>
 		<option value="2">1/2 - half step</option>
 		<option value="4">1/4 - quater step</option>
@@ -126,7 +392,7 @@ The result is theoreticaly right, but you might still need to calibrate your mac
 	</p>
 	<p>
 	Leadscrew pitch
-	<select name="StepPerMMLeadscrewType" id="StepPerMMLeadscrewType">
+	<select  id="StepPerMMLeadscrewType" class="MotorStuffSPML">
 		<option value="1.25">M8 - metric (1.25mm per rotation)</option>
 		<option value="1">M6 - metric (1mm per rotation)</option>
 		<option value="1.41111">5/16"-18 imperial coarse (1.41111mm per rotation)</option>
@@ -135,21 +401,24 @@ The result is theoreticaly right, but you might still need to calibrate your mac
 	</p>
 	<p>
 	Gear ratio
-	<input type="text" name="StepPerMMLeadscrewPulleyMotor" id="StepPerMMLeadscrewPulleyMotor" value="1" size="3" /> :
-	<input type="text" name="StepPerMMLeadscrewPulleyLeadscrew" id="StepPerMMLeadscrewPulleyLeadscrew" value="1" size="3" /> <br />(Motor pulley teeth count : Leadscrew pulley teeth count)
+	<input type="text" id="StepPerMMLeadscrewPulleyMotor" value="1" size="3"  class="MotorStuffSPML" /> :
+	<input type="text" id="StepPerMMLeadscrewPulleyLeadscrew" value="1" size="3"  class="MotorStuffSPML" /> <br />(Motor pulley teeth count : Leadscrew pulley teeth count)
 	(1:1 for direct drive - Prusa)
 	</p>
 	<p>
 	For example:
 	<b>2560 = (((360/1.8) * (1/(1/16)))/1.25h)*(1 / 1)</b>
 	</p>
-	
-<button class="smallButton" id="StepPerMMLeadscrewCalculate" onclick="return false">Calculate</button>
-  <input type="text" name="StepPerMMLeadscrewAnswer" id="StepPerMMLeadscrewAnswer" />
-</form> 
+	</div>
+	<div class="notification"><p>Set it in configuration.h in your firmware.</p></div>
+	<div class="calculationAnswer">
+Steps per mm value is 
+<input type="text" name="StepPerMMLeadscrewAnswer" id="StepPerMMLeadscrewAnswer" /><br />
+
+</div>
 
 <script type="text/javascript"> 
-$("#StepPerMMLeadscrewCalculate").click(function(){ 
+function MotorStuffSPML(){ 
 var StepSize, Microstepping, LeadscrewPitch, MotorPulley, LeadscrewPulley;
 StepSize = parseFloat($("#StepPerMMLeadscrewStepSize").val());
 Microstepping = parseInt($("#StepPerMMLeadscrewMicroStepping").val());
@@ -160,19 +429,25 @@ LeadscrewPulley = parseInt($("#StepPerMMLeadscrewPulleyLeadscrew").val());
 var StepsPerMM;
 StepsPerMM = (((360/StepSize)*Microstepping)/LeadscrewPitch)*(LeadscrewPulley/MotorPulley);
 $("#StepPerMMLeadscrewAnswer").val(StepsPerMM); 
+}
 
-return false; 
-}); 
+
+$(".MotorStuffSPML").change(function () {
+	MotorStuffSPML();
+});
+MotorStuffSPML();
+
 </script>
-</div>
+<hr width="30%" />
+
 <a name="MotorStuffSPMB" />
-<h3>Steps per mm - belt</h3> 
+<div class="calculationHeader">
+<h3>Steps per mm - belt</h3> </div>
 <div class="calculation">
 The result is theoreticaly right, but you might still need to calibrate your machine to get finest detail. This is good start tho.
-<form > 
 	<p>
 	Motor step angle 
-	<select name="StepPerMMBeltStepSize" id="StepPerMMBeltStepSize">
+	<select id="StepPerMMBeltStepSize" class="MotorStuffSPMB">
 		<option value="1.8">1.8°</option>
 		<option value="0.9">0.9°</option>
 		<option value="7.5">7.5°</option>
@@ -180,7 +455,7 @@ The result is theoreticaly right, but you might still need to calibrate your mac
 	</p>
 	<p>
 	Driver microstepping
-	<select name="StepPerMMBeltMicroStepping" id="StepPerMMBeltMicroStepping">
+	<select id="StepPerMMBeltMicroStepping" class="MotorStuffSPMB">
 		<option value="1">1 - full step</option>
 		<option value="2">1/2 - half step</option>
 		<option value="4">1/4 - quater step</option>
@@ -190,7 +465,7 @@ The result is theoreticaly right, but you might still need to calibrate your mac
 	</p>
 	<p>
 	Belt pitch
-	<select name="StepPerMMBeltPitch" id="StepPerMMBeltPitch">
+	<select  id="StepPerMMBeltPitch" class="MotorStuffSPMB">
 		<option value="2.0">2mm Pitch (GT2 mainly)</option>
 		<option value="2.03">MXL belt (2.03mm)</option>
 		<option value="2.5">T2.5 (2.5mm)</option>
@@ -201,20 +476,21 @@ The result is theoreticaly right, but you might still need to calibrate your mac
 	</p>
 	<p>
 	Tooth count
-	<input type="text" name="StepPerMMBeltToothCount" id="StepPerMMBeltToothCount" value="8" />
+	<input type="text" id="StepPerMMBeltToothCount" value="8" class="MotorStuffSPMB" />
 	</p>
 	<p>
-	<b>Steps per mm = ((360/Motor step size) * (1/Driver microstepping))/(Belt pitch * Tooth count)</b><br />
+	<b>Steps per mm = ((360°/Motor step size°) * (1/Driver microstepping))/(Belt pitch * Tooth count)</b><br />
 	For example:<br />
-	<b>80 = ((360/1.8) * (1/(1/16)))/(5 * 8)</b>
-	</p>
-	
-<button class="smallButton" id="StepPerMMBeltCalculate" onclick="return false">Calculate</button>
-  <input type="text" name="StepPerMMBeltAnswer" id="StepPerMMBeltAnswer" />
-</form> 
+	<b>80 = ((360°/1.8°) * (1/(1/16)))/(5 * 8)</b>
+	</p></div>
+	<div class="notification"><p>Set it in configuration.h in your firmware.</p></div>
+	<div class="calculationAnswer">
+	Steps per mm value = 
+  <input type="text" name="StepPerMMBeltAnswer" id="StepPerMMBeltAnswer" /><br />
+</div>
 
 <script type="text/javascript"> 
-$("#StepPerMMBeltCalculate").click(function(){ 
+function MotorStuffSPMB(){ 
 var StepSize, Microstepping, BeltPitch, ToothCount;
 StepSize = parseFloat($("#StepPerMMBeltStepSize").val());
 Microstepping = parseInt($("#StepPerMMBeltMicroStepping").val());
@@ -224,15 +500,191 @@ ToothCount = parseInt($("#StepPerMMBeltToothCount").val());
 var StepsPerMM;
 StepsPerMM = ((360/StepSize)*Microstepping)/(BeltPitch*ToothCount);
 $("#StepPerMMBeltAnswer").val(StepsPerMM); 
+}
 
-return false; 
-}); 
-</script>
+$(".MotorStuffSPMB").change(function () {
+	MotorStuffSPMB();
+});
+MotorStuffSPMB();
+ 
+</script><hr width="30%" />
+
+<a name="ExtrusionSF40" />
+<div class="calculationHeader">
+<h3>Slic3r,SFACT, SF40+ volumetric calibration</h3>
 </div>
+<div class="calculation">
+Article will be published on josefprusa.cz. 
+	<p>
+	Extrude button clicked times
+	<input type="text"  id="ExtrusionSF40Clicked" class="ExtrusionSF40" value="39" />
+	</p>
+	<p>
+	Extruded length per click in host
+	<input type="text"  id="ExtrusionSF40ExtrudedLenght" class="ExtrusionSF40" value="15" />
+	</p>
+	<p>
+	Actual e_steps_per_mm
+	<input type="text" id="ExtrusionSF40Stepspermm" class="ExtrusionSF40" value="50" /> (50 is same as in the linked article)
+	</p>
+	<p>
+	Marked length on filament in mm
+	<input type="text" id="ExtrusionSF40MarkedLenght" class="ExtrusionSF40" value="30" /> (30 is same as in the linked article)
+	</p>
+	<p>
+	<b>Volumetric e_step_per_mm = ( Extrude button clicked times * Extruded length per click in host * Actual e_steps_per_mm )  / Marked length on filament in mm
+	</b>
+	</p>
+	</div> 
+<div class="calculationAnswer">Volumetric e_step_per_mm = <input type="text" id="ExtrusionSF40Answer" />
+</div> 
+
+<script type="text/javascript"> 
+function ExtrusionSF40(){ 
+var ExtrusionSF40Clicked, ExtrusionSF40ExtrudedLenght, ExtrusionSF40Stepspermm, ExtrusionSF40MarkedLenght;
+ExtrusionSF40Clicked = parseFloat($("#ExtrusionSF40Clicked").val());
+ExtrusionSF40ExtrudedLenght = parseFloat($("#ExtrusionSF40ExtrudedLenght").val());
+ExtrusionSF40Stepspermm = parseFloat($("#ExtrusionSF40Stepspermm").val());
+ExtrusionSF40MarkedLenght = parseFloat($("#ExtrusionSF40MarkedLenght").val());
+
+var Volumetricsteps;
+Volumetricsteps = (ExtrusionSF40Clicked*ExtrusionSF40ExtrudedLenght*ExtrusionSF40Stepspermm)/ExtrusionSF40MarkedLenght;
+$("#ExtrusionSF40Answer").val(Volumetricsteps); 
+
+}
+
+$(".ExtrusionSF40").change(function () {
+	ExtrusionSF40();
+});
+ExtrusionSF40();
+</script>
+<hr width="30%" />
+
+<a name="TempLookup" />
+
+<div class="calculationHeader">
+	<h3>Thermistor lookup table generator</h3>
+</div>
+
+<div class="calculation">
+	
+	Kindly done by <a href="http://nathan7.eu">Nathan7</a>. This script allows you to create lookup table for thermistors for use on Arduino based electronics. Take the data from the thermistor datasheet. If you don't have a clue what datasheet is, ask someone on IRC to generate the lookup table for you.
+
+	<p>
+	r0
+	<input type="text" id="TempLookupr0" class="TempLookup" value="10000" />
+	</p>
+	<p>
+	t0
+	<input type="text" id="TempLookupt0" class="TempLookup" value="25" />
+	</p>
+	<p>
+	Beta
+	<input type="text" id="TempLookupBeta" class="TempLookup" value="3947" />
+	</p>
+	<p>
+	r1
+	<input type="text" id="TempLookupr1" class="TempLookup" value="680" />
+	</p>
+	<p>
+	r2
+	<input type="text" id="TempLookupr2" class="TempLookup" value="1600" />
+	</p>
+	<p>
+	Number of samples
+	<select id="TempLookupSamples" class="TempLookup">
+		<option value="20">20</option>
+		<option value="30">30</option>
+		<option value="50">50</option>
+		<option value="100">100</option>
+	</select>
+	</p>
+</div>
+<div class="calculationAnswer">
+	Thermistor lookup table
+	<textarea id="TempLookupAnswer" style="width:95%;height:200px;">
+	</textarea>
+</div>
+
+	<script type="text/javascript"> 
+	function TempLookup(){
+	arg=[];
+	arg.push(parseInt($("#TempLookupr0").val()));
+	arg.push(parseInt($("#TempLookupt0").val()));
+	arg.push(parseInt($("#TempLookupBeta").val()));
+	arg.push(parseInt($("#TempLookupr1").val()));
+	arg.push(parseInt($("#TempLookupr2").val()));
+	arg.push(parseInt($("#TempLookupSamples").val()));
+	
+	$('#TempLookupAnswer').val(createTemperatureLookup(arg));
+	}
+	
+	$(".TempLookup").change(function () {
+		TempLookup();
+	});
+	TempLookup();
+	
+	
+	</script>
+
+<hr width="30%" />		<a name="MotorStuffPrecise" />
+
+		<div class="calculationHeader">
+			<h3>Tweaking calibration</h3>
+		</div>
+
+		<div class="calculation">
+
+			If you move axis in sw for 10mm (demanded length) and actual machine moves for only 8mm, you need to do this calibration. This will calculate new steps per mm value for the axis we calibrate.
+
+			<p>
+			Demanded move length in mm
+			<input type="text" id="MotorStuffPreciseD" class="MotorStuffPrecise" value="100" />
+			</p>
+			<p>
+			Actual move length in mm
+			<input type="text" id="MotorStuffPreciseA" class="MotorStuffPrecise" value="95" />
+			</p>
+			<p>
+			Actual steps per mm
+			<input type="text"  id="MotorStuffPreciseSteps" class="MotorStuffPrecise" value="20" />
+			</p>
+			<p>
+			<b>New steps per mm = (Demanded move length in mm / Actual move length in mm) * Actual steps per mm</b>
+			</p>
+		</div>
+		<div class="calculationAnswer">
+			New steps per mm value is <input type="text" id="MotorStuffPreciseAnswer" /> 
+		</div>
+
+			<script type="text/javascript"> 
+			function MotorStuffPrecise(){ 
+			var MotorStuffPreciseD, MotorStuffPreciseA, MotorStuffPreciseSteps;
+			MotorStuffPreciseD = parseFloat($("#MotorStuffPreciseD").val());
+			MotorStuffPreciseA = parseFloat($("#MotorStuffPreciseA").val());
+			MotorStuffPreciseSteps = parseFloat($("#MotorStuffPreciseSteps").val());
+
+			var NewSteps;
+			NewSteps = (MotorStuffPreciseD/MotorStuffPreciseA)*MotorStuffPreciseSteps;
+			$("#MotorStuffPreciseAnswer").val(NewSteps); 
+			}
+
+			$(".MotorStuffPrecise").change(function () {
+				MotorStuffPrecise();
+			});
+			MotorStuffPrecise();
+
+
+			</script>
+
+		<hr width="30%" />
+
+
 <a name="Convertors" />
 <h2>Convertors</h2> 
 <a name="ConvertorsMMToF" />
-<h3>mm/s to gcode feedrate</h3>
+<div class="calculationHeader">
+<h3>mm/s to gcode feedrate</h3></div>
 <div class="calculation">
 	The standard feedrate as used within gcode is in millimeters per minute. For example:<br />
 	<br />
@@ -240,34 +692,42 @@ return false;
 	<br />
 	gives a feedrate of 3000 millimeters per minute.
 	The calculator below will convert the millimeters per second speed used in Skeinforge to the feedrate used in gcode.
-<form > 
 	<p>
 	mm/s
-	<input type="text" name="ConvertorsMMToFmms" id="ConvertorsMMToFmms" value="50" />
+	<input type="text" id="ConvertorsMMToFmms" value="50" />
 	</p>
 	<p>
 	<b>Feedrate = (mm/s)*60</b>
 	</p>
-	
-<button class="smallButton" id="ConvertorsMMToFCalculate" onclick="return false">Calculate</button>
+	</div>
+	<div class="calculationAnswer">
+	Feedrate =
   <input type="text" name="ConvertorsMMToFAnswer" id="ConvertorsMMToFAnswer" />
-</form> 
+</div>
 
 <script type="text/javascript"> 
-$("#ConvertorsMMToFCalculate").click(function(){ 
+
+function ConvertorsMMToF(){ 
 var mms;
 mms = parseFloat($("#ConvertorsMMToFmms").val());
-
 var Feedrate;
 Feedrate = mms*60;
 $("#ConvertorsMMToFAnswer").val(Feedrate); 
+}
 
-return false; 
-}); 
+$("#ConvertorsMMToFmms").change(function () {
+	ConvertorsMMToF();
+});
+ConvertorsMMToF();
+
+
 </script>
-</div>
+
+
+<hr width="30%" />
 <a name="ConvertorsFToMM" />
-<h3>gcode feedrate to mm/s</h3>
+<div class="calculationHeader">
+<h3>gcode feedrate to mm/s</h3></div>
 <div class="calculation">
 	The standard feedrate as used within gcode is in millimeters per minute. For example:<br />
 	<br />
@@ -275,77 +735,104 @@ return false;
 	<br />
 	gives a feedrate of 3000 millimeters per minute.
 	The calculator below will convert the feedrate used in gcode to the millimeters per second speed used in Skeinforge.
-<form > 
 	<p>
 	Feedrate
-	<input type="text" name="ConvertorsFToMMFeedrate" id="ConvertorsFToMMFeedrate" value="3000" />
+	<input type="text" id="ConvertorsFToMMFeedrate"  value="3000" />
 	</p>
 	<p>
 	<b>mm/s = Feedrate/60</b>
 	</p>
-	
-<button class="smallButton" id="ConvertorsFToMMCalculate" onclick="return false">Calculate</button>
-  <input type="text" name="ConvertorsFToMMAnswer" id="ConvertorsFToMMAnswer" />
-</form> 
+	</div>
+	<div class="calculationAnswer">
+Speed = 
+  <input type="text" id="ConvertorsFToMMAnswer" /> mm/s
+</div>
 
 <script type="text/javascript"> 
-$("#ConvertorsFToMMCalculate").click(function(){ 
+
+function ConvertorsFToMM(){ 
 var Feedrate;
 Feedrate = parseFloat($("#ConvertorsFToMMFeedrate").val());
-
 var mms;
 mms = Feedrate/60;
 $("#ConvertorsFToMMAnswer").val(mms); 
+} 
 
-return false; 
-}); 
+$("#ConvertorsFToMMFeedrate").change(function () {
+	ConvertorsFToMM();
+});
+
+ConvertorsFToMM();
+
 </script>
-</div>
-
+<hr width="30%" />
 <a name="Extrusion" />
 <h2>Extrusion</h2> 
 <a name="ExtrusionLC" />
+<div class="calculationHeader">
 <h3>Flow rate multiplier for layer height change</h3>
+</div>
+<div class="notification"><p><strong>WARNING!</strong> For non volumetric printing only (ancient history). If you use Slic3r, don't use this. Slic3r does it for you automatically.</p></div>
 <div class="calculation">
 I assume the the slice of the extruded filament has rectangular shape, that means that your solid layer is solid layer. 
 <br />
 This will still only guesstimate what your end flow should be. 
 <br />
 Take this multiplier and multiply with it your flow you have now (RPMs, E_steps_per_mm or the flow in skeinforge)
-<form > 
+
 	<p>
 	Actual layer height in mm
-	<input type="text" name="ExtrusionLCAH" id="ExtrusionLCAH" value="0.5" />
+	<input type="text" id="ExtrusionLCAH" class="ExtrusionLC" value="0.5" />
 	</p>
 	<p>
 	New layer height in mm
-	<input type="text" name="ExtrusionLCNH" id="ExtrusionLCNH" value="0.3" />
+	<input type="text" id="ExtrusionLCNH" class="ExtrusionLC" value="0.3" />
 	</p>
 	<p>
 	<b>Flow multiplier = New layer height in mm / Actual layer height in mm</b>
 	</p>
-	
-<button class="smallButton" id="ExtrusionLCCalculate" onclick="return false">Calculate</button>
+	</div>
+	<div class="calculationAnswer">
+Flow multiplier = 
   <input type="text" name="ExtrusionLCAnswer" id="ExtrusionLCAnswer" />
-</form> 
+</div>
 
 <script type="text/javascript"> 
-$("#ExtrusionLCCalculate").click(function(){ 
-var ExtrusionLCAH, ExtrusionLCWOH, ExtrusionLCNH;
-ExtrusionLCAH = parseFloat($("#ExtrusionLCAH").val());
-ExtrusionLCNH = parseFloat($("#ExtrusionLCNH").val());
 
-var FlowRateMultiplier;
-FlowRateMultiplier = (ExtrusionLCNH)/(ExtrusionLCAH);
-$("#ExtrusionLCAnswer").val(FlowRateMultiplier); 
+function ExtrusionLC(){
+	var ExtrusionLCAH, ExtrusionLCWOH, ExtrusionLCNH;
+	ExtrusionLCAH = parseFloat($("#ExtrusionLCAH").val());
+	ExtrusionLCNH = parseFloat($("#ExtrusionLCNH").val());
+	var FlowRateMultiplier;
+	FlowRateMultiplier = (ExtrusionLCNH)/(ExtrusionLCAH);
+	$("#ExtrusionLCAnswer").val(FlowRateMultiplier);
+}
 
-return false; 
-}); 
+$(".ExtrusionLC").change(function () {
+	ExtrusionLC();
+});
+ExtrusionLC();
+
 </script>
-</div>
+
+
+
 
 <br/>
-Using <a href="http://jquery.com/">jQuery</a>
+<div id="footer">Developed and maintained by Josef Prusa. Thanks MaxBots and Nathan7 for some additions. <br/>Using <a href="http://jquery.com/">jQuery</a></div>
 </div>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-192499-17']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
 </body>
 </html>
