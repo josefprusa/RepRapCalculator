@@ -35,7 +35,7 @@ function createTemperatureLookup(arg){
 
 
 	out ="// Thermistor lookup table for RepRap Temperature Sensor Boards (http://reprap.org/wiki/Thermistor)\n";
-	out+="// Made with the online thermistor table generator by Nathan7\n"
+	out+="// Made with the online thermistor table generator by nathan7 at "+window.location+"\n"
 	out+="// r0: {0}\n".format(r0);
 	out+="// t0: {0}\n".format(t0);
 	out+="// r1: {0}\n".format(r1);
