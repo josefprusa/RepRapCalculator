@@ -1,3 +1,8 @@
+//Thermistor temperature table generator for RepRap firmwares
+//(C) Nathan Zadoks 2011
+//CC-BY-SA or GPLv2+
+//Pick your poison.
+
 function Thermistor(r0,t0,beta,r1,r2){
 	//Class to do the thermistor maths
 	this.r0=r0;					//stated resistance, e.g. 10K

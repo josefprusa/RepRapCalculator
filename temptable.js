@@ -1,3 +1,8 @@
+//Thermistor temperature table generator for RepRap firmwares
+//(C) Nathan Zadoks 2011
+//CC-BY-SA or GPLv2+
+//Pick your poison.
+
 String.prototype.format = function() {
   var args = arguments;
   return this.replace(/{(\d+)}/g, function(match, number) { 
@@ -27,15 +32,15 @@ function createTemperatureLookup(arg){
 	else
 		max_adc=1023;
 
-	increment=Math.round(max_adc/(num_temps-1));
+	increment=Math.floor(max_adc/(num_temps-1));
 	adcs=new Array();
 	for(var i=1;i<max_adc;i+=increment)
 		adcs.push(i);
 	first=1;
 
 
-	out ="// Thermistor lookup table for RepRap Temperature Sensor Boards (http://reprap.org/wiki/Thermistor)\n";
-	out+="// Made with the online thermistor table generator by nathan7 at "+window.location+"\n"
+	out ="// Thermistor lookup table for RepRap Temperature Sensor Boards (http://make.rrrf.org/ts)\n";
+	out+="// Made with the online thermistor table generator ({0})\n".format(window.location);
 	out+="// r0: {0}\n".format(r0);
 	out+="// t0: {0}\n".format(t0);
 	out+="// r1: {0}\n".format(r1);
@@ -50,10 +55,11 @@ function createTemperatureLookup(arg){
 	for(i=0;i<adcs.length;i++){
 		adc=adcs[i];
 		counter++;
+	    out+="   {{0}, {1}}".format(adc,Math.round(t.temp(adc)));
 		if(counter==adcs.length)
-			out+="   {{0}, {1}}\n".format(adc,Math.floor(t.temp(adc)));
+            out+="\n";
 		else
-			out+="   {{0}, {1}},\n".format(adc,Math.floor(t.temp(adc)));
+            out+=",\n";
 	}
 	out+="};";
 	return out;
