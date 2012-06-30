@@ -4,7 +4,8 @@
     <head>
         <!-- The following are automatically inserted by servee -->
         <script type="text/javascript" src="jquery-1.5.min.js" ></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="https://github.com/jackmoore/autosize/raw/master/jquery.autosize.js"></script>
         <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" type="text/css" media="all" />
         <script src="thermistor.js"></script>
         <script src="temptable.js"></script>
@@ -101,7 +102,12 @@
                 -moz-border-radius: 0px;
                 margin-bottom: 0px;
             }
-            hr {
+            textarea{
+                resize: none;
+                overflow: hidden;
+                padding-left: 4.25%;
+            }
+            hr{
                 border-color: #394D54;
                 border-style: solid;
                 border-width: 1px 0 0;
@@ -528,7 +534,7 @@
         </div>
         <div class="calculationAnswer">
             Thermistor lookup table
-            <textarea class="templookup" style="width:95%;height:200px;"></textarea>
+            <textarea class="templookup text ui-widget-content ui-corner-all" style="width:95%;height:200px;"></textarea>
         </div>
         <script type="text/javascript">
         $(function(){
@@ -537,7 +543,7 @@
                 $('input,select',$('form.templookup')[0]).each(function(){
                     arg.push(parseInt($(this).val()));
                 });
-                $('textarea.templookup').val(createTemperatureLookup(arg));
+                $('textarea.templookup').val(createTemperatureLookup(arg)).autosize().trigger('oninput');
             }).change();
         });
         </script>
