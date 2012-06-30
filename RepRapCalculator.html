@@ -2,11 +2,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<!-- The following are automatically inserted by servee -->
-	<script type='text/javascript' src='jquery-1.5.min.js' ></script>
+	<script type="text/javascript" src="jquery-1.5.min.js" ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" type="text/css" media="all" />
 	<script src="thermistor.js"></script>
 	<script src="temptable.js"></script>
 	<title>RepRapCalculator</title>
 	<meta charset="utf-8" />
+    <style>
+            label, input { display:block; }
+            input.text { margin-bottom:12px; padding: .4em; }
+            fieldset { padding:0; border:0; margin-top:25px; }
+    </style>
 	<style>
 	body{
 		background-color:#FFFFFF;
@@ -567,65 +574,45 @@ ExtrusionSF40();
 </div>
 
 <div class="calculation">
-	
 	Kindly done by <a href="http://nathan7.eu">nathan7</a>. This script allows you to create lookup table for thermistors for use on Arduino based electronics. Take the data from the thermistor datasheet. If you don't have a clue what datasheet is, ask someone on IRC to generate the lookup table for you.
-
-	<p>
-	r0
-	<input type="text" id="TempLookupr0" class="TempLookup" value="100000" />
-	</p>
-	<p>
-	t0
-	<input type="text" id="TempLookupt0" class="TempLookup" value="25" />
-	</p>
-	<p>
-	Beta
-	<input type="text" id="TempLookupBeta" class="TempLookup" value="4066" />
-	</p>
-	<p>
-	r1
-	<input type="text" id="TempLookupr1" class="TempLookup" value="0" />
-	</p>
-	<p>
-	r2
-	<input type="text" id="TempLookupr2" class="TempLookup" value="4700" />
-	</p>
-	<p>
-	Number of samples
-	<select id="TempLookupSamples" class="TempLookup">
-		<option value="20">20</option>
-		<option value="30">30</option>
-		<option value="50">50</option>
-		<option value="100">100</option>
-	</select>
-	</p>
+    <form class="templookup">
+        <fieldset>
+            <label for="r0">r0</label>
+            <input type="text" id="r0" class="text ui-widget-content ui-corner-all" value="100000" />
+            <label for="t0">t0</label>
+            <input type="text" id="t0" class="text ui-widget-content ui-corner-all" value="25" />
+            <label for="beta">Beta</label>
+            <input type="text" id="beta" class="text ui-widget-content ui-corner-all" value="4066" />
+            <label for="r1">r1</label>
+            <input type="text" id="r1" class="text ui-widget-content ui-corner-all" value="0" />
+            <label for="r2">r2</label>
+            <input type="text" id="r2" class="text ui-widget-content ui-corner-all" value="4700" />
+            <label for="num_temps">Sample count</label>
+            <select id="num_temps" class="text ui-widget-content ui-corner-all">
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </fieldset>
+    </form>
 </div>
 <div class="calculationAnswer">
 	Thermistor lookup table
-	<textarea id="TempLookupAnswer" style="width:95%;height:200px;">
+	<textarea class="templookup" style="width:95%;height:200px;">
 	</textarea>
 </div>
-
-	<script type="text/javascript"> 
-	function TempLookup(){
-	arg=[];
-	arg.push(parseInt($("#TempLookupr0").val()));
-	arg.push(parseInt($("#TempLookupt0").val()));
-	arg.push(parseInt($("#TempLookupBeta").val()));
-	arg.push(parseInt($("#TempLookupr1").val()));
-	arg.push(parseInt($("#TempLookupr2").val()));
-	arg.push(parseInt($("#TempLookupSamples").val()));
-	
-	$('#TempLookupAnswer').val(createTemperatureLookup(arg));
-	}
-	
-	$(".TempLookup").change(function () {
-		TempLookup();
-	});
-	TempLookup();
-	
-	
-	</script>
+<script type="text/javascript"> 
+    $(function(){
+        $('input,select',$('form.templookup')[0]).change(function(){
+            arg=new Array();
+            $('input,select',$('form.templookup')[0]).each(function(){
+                arg.push(parseInt($(this).val()));
+            });
+            $('textarea.templookup').val(createTemperatureLookup(arg));
+        }).change();
+    });
+</script>
 
 <hr width="30%" />		<a name="MotorStuffPrecise" />
 
