@@ -7,7 +7,7 @@ String.prototype.format = function() {
     ;
   });
 };
-function createTemperatureLookup(arg){
+function createTemperatureLookup(arg,hash){
 /*    sensible defaults:
     r0=10000;
     t0=25;
@@ -33,9 +33,9 @@ function createTemperatureLookup(arg){
         adcs.push(i);
     first=1;
 
-
+    url=window.location.toString().substring(0,window.location.toString().length-window.location.hash.length)+(hash?('#'+hash):'');
     out ="// Thermistor lookup table for RepRap Temperature Sensor Boards (http://reprap.org/wiki/Thermistor)\n";
-    out+="// Made with the online thermistor table generator by nathan7 at "+window.location+"\n"
+    out+="// Made with the online thermistor table generator by nathan7 at "+url+"\n"
     out+="// r0: {0}\n".format(r0);
     out+="// t0: {0}\n".format(t0);
     out+="// r1: {0}\n".format(r1);

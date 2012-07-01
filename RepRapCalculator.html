@@ -44,8 +44,7 @@
             }
             textarea{
                 resize: none;
-                overflow: hidden;
-                padding-left: 4.25%;
+                margin-left: 11px;
             }
         </style>
         <style>
@@ -562,7 +561,7 @@
                     arg.push($(this).intVal());
                 });
                 arg.push(parseInt($($('input:checked'),$('#num_temps')[0])[0].id.match(/^num_temps_([0-9]+)$/)[1]))
-                $('#out_templookup').val(createTemperatureLookup(arg)).autosize().trigger('oninput');
+                $('#out_templookup').val(createTemperatureLookup(arg,'TempLookup')).autosize().trigger('oninput');
             }
             templookup_update();
             $('input,select',$('.calculation.templookup')[0]).change(templookup_update);
