@@ -1,5 +1,7 @@
 Number.prototype.toMax=function(n){
-    return (Math.round(this*Math.pow(10,n))/Math.pow(10,n)).toString();
+    out=this.toPrecision(n);
+    if(out.match(/[.,]/)) out=out.replace(/[.,]?0*$/,'');
+    return out;
 };
 jQuery.fn.floatVal=function(){ 
     v=parseFloat(this.val());

@@ -256,10 +256,10 @@
                 suggest[100]=0.5;
                 var predictedFreeEx,suggestedLH;
                 nozzleid=$('#nozzleid',$("form.calculation.printsetup1")[0]).floatVal();
-                predictedFreeExt=roundNumber(nozzleid+0.08,2);
-                suggestedLH = suggest[Math.floor(nozzleid*100)];
-                $("#predextrusiondiam").fancyOutput('mm').text(predictedFreeExt);
-                $("#suglayerheight").fancyOutput('mm').text(suggestedLH);
+                predictedFreeExt=nozzleid+0.08;
+                suggestedLH=suggest[Math.floor(nozzleid*100)];
+                $("#predextrusiondiam").fancyOutput('mm').text(predictedFreeExt.toFixed(2));
+                $("#suglayerheight").fancyOutput('mm').text(suggestedLH.toFixed(2));
             }
             printsetup1_update();
             $('input,select',$('.calculation.printsetup1')[0]).change(printsetup1_update).change();
@@ -329,9 +329,9 @@
                     $("#smallWOH").show();
                 else
                     $("#smallWOH").hide();
-                bridgeMult = (freeExt*0.7)/extLine;
-                $("#bridgeflow").fancyOutput().text(bridgeMult.toFixed(3));
-                smallest = lineWidth/2;
+                bridgeMult=(freeExt*0.7)/extLine;
+                $("#bridgeflow").fancyOutput().text(bridgeMult.toMax(3));
+                smallest=lineWidth/2;
                 $("#smallestfeature").fancyOutput('mm').text(smallest.toFixed(1));
                 angleHelp = Math.sqrt((lineWidth/2)*(lineWidth/2)+LH*LH);
                 angleHelp = Math.asin((lineWidth/2)/angleHelp);
@@ -404,7 +404,8 @@
                 LeadscrewPitch=$("#pitch_leadscrew").floatVal();
                 MotorPulley=$("#pulleymotor_leadscrew").fancyInput().intVal();
                 LeadscrewPulley=$("#pulleyleadscrew_leadscrew").fancyInput().intVal();
-                $("#stepsmm_leadscrew").fancyOutput('steps/mm').text((((360/StepSize)*Microstepping)/LeadscrewPitch)*(LeadscrewPulley/MotorPulley));
+                stepsmm=(360/StepSize)*Microstepping/LeadscrewPitch*(LeadscrewPulley/MotorPulley);
+                $("#stepsmm_leadscrew").fancyOutput('steps/mm').text(stepsmm.toMax(9));
             }
             leadscrew_update();
             $('input,select',$(".calculation.leadscrew")[0]).change(leadscrew_update);
@@ -468,7 +469,8 @@
                 Microstepping=$("#microstepping_belt").intVal();
                 BeltPitch=$("#pitch_belt").floatVal();
                 ToothCount=$("#toothcount_belt").fancyInput('teeth').intVal();
-                $("#stepsmm_belt").fancyOutput('steps/mm').text(((360/StepSize)*Microstepping)/(BeltPitch*ToothCount));
+                stepsmm=((360/StepSize)*Microstepping)/(BeltPitch*ToothCount);
+                $("#stepsmm_belt").fancyOutput('steps/mm').text(stepsmm.toMax(9));
             }
             belt_update();
             $(".calculation.belt").change(belt_update);
@@ -511,7 +513,7 @@
                 ExtrusionSF40Stepspermm=$("#original_stepsmm_e").fancyInput('steps/mm').floatVal();
                 ExtrusionSF40MarkedLength=$("#markedlength_e").fancyInput('mm').floatVal();
                 Volumetricsteps=(ExtrusionSF40Clicked*ExtrusionSF40ExtrudedLength*ExtrusionSF40Stepspermm)/ExtrusionSF40MarkedLength;
-                $("#stepsmm_e").fancyOutput('steps/mm').text(Volumetricsteps);
+                $("#stepsmm_e").fancyOutput('steps/mm').text(Volumetricsteps.toMax(9));
             }
             e_update();
             $('input,select',$('.calculation.e')[0]).change(e_update);
@@ -598,7 +600,7 @@
                 MotorStuffPreciseA=$("#actual_xy").fancyInput('mm').floatVal();
                 MotorStuffPreciseSteps=$("#original_stepsmm_xy").fancyInput('steps/mm').floatVal();
                 newstepsmm=(MotorStuffPreciseD/MotorStuffPreciseA)*MotorStuffPreciseSteps
-                $('#stepsmm_xy').fancyOutput('steps/mm').text(newstepsmm.toMax(7));
+                $('#stepsmm_xy').fancyOutput('steps/mm').text(newstepsmm.toMax(9));
             }
             xy_update();
             $('input,select',$('.calculation.xy')[0]).change(xy_update);
@@ -632,7 +634,7 @@
         <script type="text/javascript">
             function mms_update(){
                 mms=$("#mms_mms").fancyInput('mm/s').floatVal();
-                $("#mmmin_mms").fancyOutput('mm/min').text(mms*60);
+                $("#mmmin_mms").fancyOutput('mm/min').text((mms*60).toMax(9));
             }
             mms_update();
             $('select,input',$(".calculation.mms")[0]).change(mms_update);
@@ -664,7 +666,7 @@
         <script type="text/javascript">
             function mmmin_update(){
                 mmmin=$("#mmmin_mmmin").fancyInput('mm/min').floatVal();
-                $("#mms_mmmin").fancyOutput('mm/s').text((mmmin/60).toMax(7));
+                $("#mms_mmmin").fancyOutput('mm/s').text((mmmin/60).toMax(9));
             }
             mmmin_update();
             $('input,select',$('.calculation.mmmin')[0]).change(mmmin_update);
