@@ -198,9 +198,9 @@
                     <ul>
                         <li><a href="#MotorStuffSPML">Steps per mm - leadscrew</a></li>
                         <li><a href="#MotorStuffSPMB">Steps per mm - belt</a></li>
-                        <li><a href="#ExtrusionSF40">Slic3r,SFACT, SF40+ volumetric calibration</a></li>
+                        <li><a href="#ExtrusionSF40">Extruder calibration</a></li>
                         <li><a href="#TempLookup">Thermistor lookup table generator</a></li>
-                        <li><a href="#MotorStuffPrecise">Tweaking calibration</a></li>
+                        <li><a href="#MotorStuffPrecise">Axis calibration</a></li>
                     </ul>
                 </li>
                 <li>
@@ -482,7 +482,7 @@
         <div class="calculation e">
             <a href="http://josefprusa.cz/skeinforge-40-volumetric-calibration/">Extruder calibration tutorial</a>
             <p>
-                Extrude button clicked times
+                Extrude button clicks
                 <input type="text" id="clicks_e" value="39" />
             </p>
             <p>
@@ -490,15 +490,15 @@
                 <input type="text" id="extruded_e" value="15" />
             </p>
             <p>
-                Actual extruder steps/mm
+                Old extruder steps/mm
                 <input type="text" id="original_stepsmm_e" value="50" /> (50 is same as in the linked article)
             </p>
             <p>
-                Marked length on filament in mm
+                Marked length on filament
                 <input type="text" id="markedlength_e" value="30" /> (30 is same as in the linked article)
             </p>
             <p>
-                <b>e_steps_per_mm = ( Extrude button clicked times * Extruded length per click in host * Actual e_steps_per_mm )  / Marked length on filament in mm</b>
+                <b>Extruder steps/mm = ( extrude button clicks * extruded length per click * old extruder steps/mm )  / marked length on filament</b>
             </p>
         </div>
         <div class="calculationAnswer">
@@ -569,24 +569,24 @@
         <hr width="30%" />
         <a name="MotorStuffPrecise" />
         <div class="calculationHeader">
-            <h3>Tweaking calibration</h3>
+            <h3>Axis calibration</h3>
         </div>
         <div class="calculation xy">
             If you move axis in sw for 10mm (demanded length) and actual machine moves for only 8mm, you need to do this calibration. This will calculate new steps per mm value for the axis we calibrate.
             <p>
-                Demanded move length in mm
+                Expected move length
                 <input type="text" id="intended_xy" value="100" />
             </p>
             <p>
-                Actual move length in mm
+                Actual move length
                 <input type="text" id="actual_xy" value="95" />
             </p>
             <p>
-                Actual steps per mm
+                Old steps/mm
                 <input type="text" id="original_stepsmm_xy" value="20" />
             </p>
             <p>
-                <b>New steps per mm = (Demanded move length in mm / Actual move length in mm) * Actual steps per mm</b>
+                <b>new steps/mm = (expected move length/actual move length) * old steps/mm</b>
             </p>
         </div>
         <div class="calculationAnswer xy">
