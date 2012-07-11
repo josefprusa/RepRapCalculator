@@ -24,7 +24,7 @@ function Thermistor(r0,t0,beta,r1,r2){
     }
     this.setting=function(t){
         //Convert a temperature into a ADC value
-        r=this.r0*exp(this.beta*(1/(t+273.15)-1/this.t0));    //resistance of the thermistor
+        r=this.r0*Math.exp(this.beta*(1/(t+273.15)-1/this.t0));    //resistance of the thermistor
         v=this.vs*r/(this.rs+r);                //the voltage at the potential divider
         return Math.round(v/this.vadc*1024);            //the ADC reading
     }
