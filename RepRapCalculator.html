@@ -189,10 +189,7 @@
 		</ul>
 	</div>
 
-<div class="notification rounded">
-<p>Change the values and answer appears instantly. Please <strong>hit Enter</strong> when modifying text fields to submit your value.
-</p>	
-</div>
+
 
 <a name="Printing" />
 
@@ -813,13 +810,18 @@ $(".ExtrusionLC").change(function () {
 });
 ExtrusionLC();
 
+$(document).ready(function() {
+	$('input').bind('mouseenter mouseleave keyup keydown', function() {
+		$(this).trigger('change');
+	});
+})
 </script>
 
 
 
 
 <br/>
-<div id="footer">Developed and maintained by Josef Prusa. Thanks MaxBots and nathan7 for some additions. <br/>Using <a href="http://jquery.com/">jQuery</a></div>
+<div id="footer">Developed and maintained by Josef Prusa. Thanks MaxBots, nathan7 and powtac for some additions. <br/>Using <a href="http://jquery.com/">jQuery</a></div>
 </div>
 <script type="text/javascript">
 
